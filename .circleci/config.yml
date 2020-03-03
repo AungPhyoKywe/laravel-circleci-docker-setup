@@ -11,9 +11,11 @@ workflows:
     # Run the welcome/run job in its own container
     jobs:
       - welcome/run
+      - steps:
+          - run:
 
-      - run:
+              name: Run PHPUnit
+              command: vendor/bin/phpunit
 
-            name: Run PHPUnit
-            command: vendor/bin/phpunit
+
 
