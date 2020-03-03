@@ -12,4 +12,4 @@ jobs:
 
       - run:
           name: Run PHPUnit
-          command: ./vendor/bin/phpunit --filter "AppTest"
+          command: ./vendor/bin/phpunit
