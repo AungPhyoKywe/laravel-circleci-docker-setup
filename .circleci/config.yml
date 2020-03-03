@@ -1,0 +1,5 @@
+version: 2.1
+jobs:
+   - run:
+        name: Run PHPUnit
+        command: vendor/bin/phpunit
