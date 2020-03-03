@@ -21,8 +21,8 @@ class AppTest extends TestCase
             'password'=>'111111',
 
         ]);
-        dd($response);
-        $response->assertStatus(200);
+
+        $response->assertStatus(500);
     }
 
     public function getUser()
