@@ -65,7 +65,9 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.json" }}
 
       # run tests!
-
+      - run:
+          name: Key Gen
+          command: php artisan key:generate
       - run:
           name: Run tests
           command: |
