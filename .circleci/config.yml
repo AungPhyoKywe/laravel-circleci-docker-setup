@@ -73,9 +73,9 @@ jobs:
           name: Key Gen2
           command: php artisan key:generate
 
-      - run:
-          name: Migrate
-          command: php artisan config:clear | php artisan config:cache | php artisan migrate
+#      - run:
+#          name: Migrate
+#          command: php artisan config:clear | php artisan config:cache | php artisan migrate
       - run:
           name: Run tests
           command: |
