@@ -28,9 +28,10 @@ jobs:
           keys:
             - composer-v1-{{ checksum "composer.json" }}
             - composer-v1-
-      - run:
-          name: Install project dependencies
-          command: composer install -n --prefer-dist
+      - run: composer update
+#      - run:
+#          name: Install project dependencies
+#          command: composer install -n --prefer-dist
       - save_cache:
           key: composer-v1-{{ checksum "composer.json" }}
           paths:
