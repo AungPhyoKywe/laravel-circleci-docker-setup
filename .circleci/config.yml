@@ -72,6 +72,10 @@ jobs:
       - run:
           name: Key Gen2
           command: php artisan key:generate
+
+      - run:
+          name: Migrate
+          command: php artisan migrate
       - run:
           name: Run tests
           command: |
