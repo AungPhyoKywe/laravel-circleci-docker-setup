@@ -75,7 +75,7 @@ jobs:
 
       - run:
           name: Migrate
-          command: php artisan migrate
+          command: php artisan config:clear | php artisan config:cache | php artisan migrate
       - run:
           name: Run tests
           command: |
