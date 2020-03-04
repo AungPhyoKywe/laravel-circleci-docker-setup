@@ -31,7 +31,7 @@ jobs: # a collection of steps
 #          paths:
 #            - node_modules
       - run: touch storage/testing.sqlite
-      - run: ./vendor/bin/phpunit
+      - run: ./vendor/bin/phpunit --filter "AppTest"
 #      - run: php artisan migrate --env=testing --database=sqlite_testing --force
 #      - run: ./vendor/bin/codecept build
 #      - run: ./vendor/bin/codecept run
