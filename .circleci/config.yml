@@ -47,7 +47,8 @@ jobs:
       - run:
           name: Create non-admin user
           command: |
-            sudo mysql -u root -e "CREATE users root IDENTIFIED BY 'root';"
+            sudo mysql -u root -e "CREATE user root IDENTIFIED BY 'root';"
+
 
       # Download and cache dependencies
       - restore_cache:
