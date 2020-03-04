@@ -32,10 +32,10 @@ jobs:
           key: v1-dependencies-{{ checksum "composer.lock" }}
           paths:
             - ./vendor
-      - restore_cache:
-          keys:
-            - node-v1-{{ checksum "package-lock.json" }}
-            - node-v1-
+#      - restore_cache:
+#          keys:
+#            - node-v1-{{ checksum "package-lock.json" }}
+#            - node-v1-
       - run: npm install
       - save_cache:
           key: node-v1-{{ checksum "package-lock.json" }}
@@ -43,7 +43,7 @@ jobs:
             - node_modules
 
       # prepare the database
-      - run: mysqladmin create test --user="root" --password="root"
+#      - run: mysqladmin create test --user="root" --password="root"
       - run: php artisan migrate --env=testing --force
 
       # run tests
