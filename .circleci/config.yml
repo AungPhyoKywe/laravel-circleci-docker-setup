@@ -35,11 +35,6 @@ jobs:
           paths:
             - ./vendor
 
-      # prepare the database
-      - run:
-          name: "Create Environment file and generate app key"
-          command: php artisan key:generate
-
 
       - run:
           name: "Generate Passport encryption keys"
