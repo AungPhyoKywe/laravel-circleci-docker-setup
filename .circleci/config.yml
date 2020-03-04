@@ -1,47 +1,50 @@
+# PHP CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-php/ for more details
+#
 version: 2
-
 jobs:
   build:
-    working_directory: ~/laravel
     docker:
-      - image: notnoopci/php:7.2-apache-node
-      environment:
-        MYSQL_HOST: 127.0.0.1
-        MYSQL_DB: laravel_passport
-        MYSQL_USER: root
-        MYSQL_ALLOW_EMPTY_PASSWORD: false
-        MYSQL_PASSWORD: root
-          - image: mysql:5.7
-            command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda
-            environment:
-              MYSQL_USER: root
-              MYSQL_ALLOW_EMPTY_PASSWORD: false
+      - image: circleci/php:7.2-node-browsers
+      - image: circleci/mysql:5.7-ram
 
     steps:
-      - run:
-          name: Install PHP extensions
-          command: sudo docker-php-ext-install pdo_mysql
-      - run:
-          name: Install Composer
-          command: 'curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer'
-      - run:
-          name: Display versions
-          command: |
-            php -v
-            composer --version
       - checkout
+
+      - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
+      - run: sudo docker-php-ext-install zip bcmath
+      - run: sudo apt-get install mysql-client
+
+      # Download and cache dependencies
       - restore_cache:
           keys:
-            - composer-v1-{{ checksum "composer.json" }}
-            - composer-v1-
-      - run: composer update
-#      - run:
-#          name: Install project dependencies
-#          command: composer install -n --prefer-dist
+            - v1-dependencies-{{ checksum "composer.lock" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      # Retrieve Laravel Nova using credentials stored in CircleCI
+      - run: composer config http-basic.nova.laravel.com ${NOVA_USERNAME} ${NOVA_PASSWORD}
+
+      - run: composer install -n --prefer-dist
+
       - save_cache:
-          key: composer-v1-{{ checksum "composer.json" }}
+          key: v1-dependencies-{{ checksum "composer.lock" }}
           paths:
-            - vendor
-      - run:
-          name: Run PhpUnit
-          command: ./vendor/bin/phpunit
+            - ./vendor
+      - restore_cache:
+          keys:
+            - node-v1-{{ checksum "package-lock.json" }}
+            - node-v1-
+      - run: npm install
+      - save_cache:
+          key: node-v1-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+
+      # prepare the database
+      - run: mysqladmin create test --user="root" --password="root"
+      - run: php artisan migrate --env=testing --force
+
+      # run tests
+      - run: ./vendor/bin/phpunit
