@@ -94,7 +94,7 @@ jobs:
 
       # prepare the database
 #      - run: mysqladmin create test --host="127.0.0.1" --user="root" --password="root"
-      - run: php artisan migrate --env=testing --force
+#      - run: php artisan migrate --env=testing --force
 
       # run tests
       - run: ./vendor/bin/phpunit
