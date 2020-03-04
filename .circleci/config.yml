@@ -5,12 +5,18 @@ jobs:
     working_directory: ~/laravel
     docker:
       - image: notnoopci/php:7.2-apache-node
-      - image: circleci/mysql:5.7
-        environment:
-          - MYSQL_USER=root
-          - MYSQL_PASSWORD=root
-          - MYSQL_ALLOW_EMPTY_PASSWORD=false
-          - MYSQL_DATABASE=laravel_passport
+      environment:
+        MYSQL_HOST: 127.0.0.1
+        MYSQL_DB: laravel_passport
+        MYSQL_USER: root
+        MYSQL_ALLOW_EMPTY_PASSWORD: false
+        MYSQL_PASSWORD: root
+          - image: mysql:5.7
+            command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin --innodb-large-prefix=true --innodb-file-format=Barracuda
+            environment:
+              MYSQL_USER: root
+              MYSQL_ALLOW_EMPTY_PASSWORD: false
+
     steps:
       - run:
           name: Install PHP extensions
