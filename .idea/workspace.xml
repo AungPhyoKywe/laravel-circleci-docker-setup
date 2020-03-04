@@ -2,6 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e61c3359-5f2e-41c4-a243-93a25ccfcce0" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/mysql/my.cnf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nginx/conf.d/app.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/php/local.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.circleci/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.circleci/config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/Feature/AppTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/AppTest.php" afterDir="false" />
     </list>
@@ -11,7 +15,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution>
       <executable />
@@ -175,7 +179,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1583219722933</updated>
-      <workItem from="1583219724103" duration="10285000" />
+      <workItem from="1583219724103" duration="10650000" />
+      <workItem from="1583288733292" duration="4095000" />
     </task>
     <servers />
   </component>
@@ -187,7 +192,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
