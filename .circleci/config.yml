@@ -32,6 +32,8 @@ jobs: # a collection of steps
 #            - node_modules
       - run: touch storage/testing.sqlite
       - run: composer update
+      - run: cp .env.example .env
+      - run: composer install
       - run: php artisan key:generate
       - run: php artisan config:cache
       - run: vendor/bin/phpunit
