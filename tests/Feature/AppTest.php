@@ -17,7 +17,7 @@ class AppTest extends TestCase
     {
         $response = $this->json('POST',route('api.name'),[
 
-            'email'=>'test22732@gmail.com',
+            'email'=>'test227323@gmail.com',
             'password'=>'111111',
 
         ]);
