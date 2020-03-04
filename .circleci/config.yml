@@ -6,45 +6,41 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/php:7.2-node-browsers
-      - image: circleci/mysql:5.7-ram
+      # specify the version you desire here
+      - image: circleci/php:7.2-apache-stretch-node-browsers
+      - image: circleci/mysql:5.7
+        environment:
+          MYSQL_ROOT_PASSWORD: root
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/mysql:9.4
 
     steps:
       - checkout
 
-      - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
-      - run: sudo docker-php-ext-install zip bcmath
-      - run: sudo apt-get install default-mysql-client
+      - run: sudo apt-get install -y libzip-dev
+      - run: sudo docker-php-ext-install zip
+      - run: sudo apt-get update
+      - run: sudo apt-get install -y zlib1g-dev libicu-dev g++
+      - run: sudo docker-php-ext-configure intl
+      - run: sudo docker-php-ext-install intl
+      - run: sudo docker-php-ext-install pdo_mysql
 
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "composer.lock" }}
+            - v1-dependencies-{{ checksum "composer.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-
-      # Retrieve Laravel Nova using credentials stored in CircleCI
-#      - run: composer config http-basic.nova.laravel.com ${NOVA_USERNAME} ${NOVA_PASSWORD}
 
       - run: composer install -n --prefer-dist
 
       - save_cache:
-          key: v1-dependencies-{{ checksum "composer.lock" }}
           paths:
             - ./vendor
-#      - restore_cache:
-#          keys:
-#            - node-v1-{{ checksum "package-lock.json" }}
-#            - node-v1-
-      - run: npm install
-      - save_cache:
-          key: node-v1-{{ checksum "package-lock.json" }}
-          paths:
-            - node_modules
+          key: v1-dependencies-{{ checksum "composer.json" }}
 
-      # prepare the database
-#      - run: mysqladmin create test --user="root" --password="root"
-      - run: php artisan migrate --env=testing --force
-
-      # run tests
+      # run tests!
       - run: ./vendor/bin/phpunit
