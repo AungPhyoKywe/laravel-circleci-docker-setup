@@ -41,4 +41,4 @@ jobs:
       # run tests with phpunit
       - run:
           name: "Run Tests"
-          command: docker-compose exec app ./vendor/bin/phpunit
+          command: ./vendor/bin/phpunit
