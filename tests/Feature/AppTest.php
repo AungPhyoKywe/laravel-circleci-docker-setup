@@ -22,7 +22,7 @@ class AppTest extends TestCase
             'password_confirmation'=>'111111',
 
         ]);
-
+        dd($response);
 
         $response->assertStatus(200);
     }
