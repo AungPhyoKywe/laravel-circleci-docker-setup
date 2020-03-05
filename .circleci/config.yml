@@ -16,7 +16,7 @@ jobs:
           name: Setup Environment
           command: |
             cp .env.example .env
-      - run: sudo apt update && sudo apt install zlib1g-dev libsqlite3-dev
+#      - run: sudo apt update && sudo apt install zlib1g-dev libsqlite3-dev
       - run: sudo docker-php-ext-install zip
       - run: sudo -E docker-php-ext-install pdo pdo_mysql
       - run: sudo -E docker-php-ext-install bcmath && sudo docker-php-ext-enable bcmath

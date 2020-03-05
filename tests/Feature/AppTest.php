@@ -17,12 +17,12 @@ class AppTest extends TestCase
     {
         $response = $this->json('POST',route('api.register'),[
             'name'=>'apk',
-            'email'=>'test2273344443@gmail.com',
+            'email'=>'test00@gmail.com',
             'password'=>'111111',
             'password_confirmation'=>'111111',
 
         ]);
-        dd($response);
+
 
         $response->assertStatus(200);
     }
