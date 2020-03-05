@@ -23,7 +23,7 @@ class AppTest extends TestCase
 
         ]);
 
-        dd($response);
+       // dd($response);
         $response->assertStatus(200);
     }
     /**
