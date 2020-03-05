@@ -59,3 +59,11 @@ jobs:
       - run:
           name: Run App Unit Tests
           command: ./vendor/bin/phpunit --testsuite Unit
+      - run:
+          name: Show Mysql
+          command: sudo mysql -u root -p
+
+      - run:
+          name: Show Mysql2
+          command: root
+
