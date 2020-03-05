@@ -22,7 +22,7 @@ class AppTest extends TestCase
 
         ]);
 
-        $response->assertStatus(500);
+        $response->assertStatus(200);
     }
     /**
      * A basic feature getUser.
