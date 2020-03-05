@@ -21,6 +21,7 @@ class AppTest extends TestCase
             'password'=>'111111',
 
         ]);
+        dd($response);
 
         $response->assertStatus(200);
     }
