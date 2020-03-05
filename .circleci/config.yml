@@ -8,7 +8,8 @@ jobs:
         command: [--default-authentication-plugin=mysql_native_password]
         environment:
           MYSQL_USER: root
-          MYSQL_ROOT_PASSWORD: root
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_ROOT_PASSWORD: ''
           MYSQL_DATABASE: laravel_passport
     steps:
       - checkout
@@ -61,7 +62,7 @@ jobs:
           command: ./vendor/bin/phpunit --testsuite Unit
       - run:
           name: Show Mysql
-          command: sudo mysql -u root -p
+          command: mysql -u root -p
 
       - run:
           name: Show Mysql2
