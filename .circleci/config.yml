@@ -62,7 +62,7 @@ jobs:
           command: ./vendor/bin/phpunit --testsuite Unit
       - run:
           name: Show Mysql
-          command: mysql -u root -p
+          command: mysql -u root
 
       - run:
           name: Show Mysql2
