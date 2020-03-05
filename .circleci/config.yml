@@ -50,7 +50,7 @@ jobs:
       - run: php artisan key:generate
       - run: php artisan migrate --force
       - run: php artisan db:seed --force
-      - run: ./vendor/bin/phpcs --standard=PSR2 app/
+#      - run: ./vendor/bin/phpcs --standard=PSR2 app/
       - run:
           name: Run Laravel Server
           command: php artisan serve
