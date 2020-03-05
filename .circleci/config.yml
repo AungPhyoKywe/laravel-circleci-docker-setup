@@ -1,82 +1,68 @@
-# PHP CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-php/ for more details
-#
 version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
-      - image: circleci/php:7.2-apache-stretch-node-browsers
+      # Specify the version you desire here
+      - image: circleci/php:7.3.3-fpm-node
+      - image: circleci/mysql:8.0-ram
+        command: [--default-authentication-plugin=mysql_native_password]
         environment:
+          MYSQL_USER: root
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_HOST: 127.0.0.1
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mysql:9.4
-
+          MYSQL_DATABASE: laravel_passport
     steps:
       - checkout
       - run:
-          name: Install things we need
+          name: Setup Environment
           command: |
-            sudo apt-get update
-            sudo apt-get install -y libzip-dev
-            sudo apt-get install -y zlib1g-dev libicu-dev g++
-            sudo apt-get install mysql-client
-            sudo apt-get -y install mysql-server
-      - run:
-          name: Install PHP exts
-          command: |
-            sudo docker-php-ext-install zip
-            sudo docker-php-ext-configure intl
-            sudo docker-php-ext-install intl
-            sudo docker-php-ext-install pdo_mysql
-      - run:
-          name: Fix MySQL socket config
-          command: |
-            sudo sh -c "echo 'pdo_mysql.default_socket=/var/run/mysqld/mysqld.sock' > /usr/local/etc/php/conf.d/pdo.ini"
-      - run:
-          name: Start database server
-          command: |
-            sudo service mysql start
-            sleep 2
-            ps aux | grep mysql
-      - run:
-          name: Create non-admin user
-          command: |
-            sudo mysql -u root -e "CREATE user root IDENTIFIED BY 'root';"
+            cp .env.example .env
+      - run: sudo apt update && sudo apt install zlib1g-dev libsqlite3-dev
+      - run: sudo docker-php-ext-install zip
+      - run: sudo -E docker-php-ext-install pdo pdo_mysql
+      - run: sudo -E docker-php-ext-install bcmath && sudo docker-php-ext-enable bcmath
+      - run: sudo apt install -y mysql-client
 
-
-      # Download and cache dependencies
+      # composer cache
       - restore_cache:
           keys:
+            # "composer.lock" can be used if it is committed to the repo
             - v1-dependencies-{{ checksum "composer.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-
       - run: composer install -n --prefer-dist
-
       - save_cache:
+          key: composer-v1-{{ checksum "composer.lock" }}
           paths:
-            - ./vendor
-          key: v1-dependencies-{{ checksum "composer.json" }}
-
-      # run tests!
+            - vendor
+      # node cache
+      - restore_cache:
+          keys:
+            - node-v3-{{ checksum "package.json" }}
+            - node-v3-
+      - run: yarn install
+      - save_cache:
+          key: node-v3-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+            - ~/.yarn
+      - run: composer dump-autoload
+      # prepare the database
+      - run: php artisan key:generate
+      - run: php artisan migrate --force
+      - run: php artisan db:seed --force
+      - run: ./vendor/bin/phpcs --standard=PSR2 app/
       - run:
-          name: Key Gen
-          command: cp .env.example .env
-
+          name: Run Laravel Server
+          command: php artisan serve
+          background: true
       - run:
-          name: Key Gen2
-          command: php artisan key:generate
-
-#      - run:
-#          name: Migrate
-#          command: php artisan config:clear | php artisan config:cache | php artisan migrate
+          name: Run App Feature Tests
+          command: ./vendor/bin/phpunit --testsuite Feature
       - run:
-          name: Run tests
-          command: |
-            ./vendor/bin/phpunit
+          name: Run App Unit Tests
+          command: ./vendor/bin/phpunit --testsuite Unit
+      - run:
+          name: Run Laravel Dusk Tests
+          command: php artisan dusk
+          environment:
+            APP_URL: http://localhost:8000
