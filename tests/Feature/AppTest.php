@@ -15,10 +15,11 @@ class AppTest extends TestCase
      */
     public function testExample()
     {
-        $response = $this->json('POST',route('api.name'),[
-
-            'email'=>'test227323@gmail.com',
+        $response = $this->json('POST',route('api.register'),[
+            'name'=>'apk',
+            'email'=>'test2273344443@gmail.com',
             'password'=>'111111',
+            'password_confirmation'=>'111111',
 
         ]);
 
