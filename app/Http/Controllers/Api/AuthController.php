@@ -30,6 +30,7 @@ class AuthController extends Controller
     }
 
     /**
+     *
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -38,6 +39,7 @@ class AuthController extends Controller
     public function store(Request $request)
     {
         print_r($request);
+
     }
 
     /**
